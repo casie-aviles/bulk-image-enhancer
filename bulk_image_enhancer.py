@@ -4,6 +4,7 @@ import multiprocessing as mp
 import os, os.path
 import time
 import textwrap
+import filecmp
 
 def enhance(source_path, output_path, brightness_factor, sharpness_factor, contrast_factor, start_time, secs, file):
 
@@ -48,12 +49,12 @@ def main():
     # source_path = "D:\\Users\\Casie\\Desktop\\bulk-image-enhancer\\cat_photos"
     # output_path = "D:\\Users\\Casie\\Desktop\\bulk-image-enhancer\\output"
 
-    print('---')
-    print('Factor Notes:')
-    print('Factor == 1 - original image')
-    print('Factor < 1 - darker, lower contrast, lower sharpness')
-    print('Factor > 1 - brighter, higher contrast, sharper')
-    print()
+    # print('---')
+    # print('Factor Notes:')
+    # print('Factor == 1 - original image')
+    # print('Factor < 1 - darker, lower contrast, lower sharpness')
+    # print('Factor > 1 - brighter, higher contrast, sharper')
+    # print()
 
     brightness_factor = float(input("Set brightness factor: "))
     sharpness_factor = float(input("Set sharpness factor: "))
@@ -100,16 +101,19 @@ def main():
 
     elapsed_time = round(time.time() - start_time, 2)
 
-    # get the no. of enhanced images and raw images
-    _, _, files = next(os.walk(source_path))
-    num_source = len(files)
-    _, _, files = next(os.walk(output_path))
-    num_enhanced = len(files)
+    # check how much of the output matches the source images
+    output_dir_contents = os.listdir(output_path)
+
+    match = 0
+
+    for file in dir_contents:
+        if file in output_dir_contents:
+            match+=1
 
     # write statistics report
     write_text =    f"""
-                    Number of images enhanced: {num_enhanced}
-                    Number of raw images: {num_source}
+                    Number of images enhanced: {match}
+                    Number of raw images: {len(dir_contents)}
                     Output folder: {output_path}
                     Elapsed time: {elapsed_time}
                     Number of pool processes: {mp.cpu_count()}
