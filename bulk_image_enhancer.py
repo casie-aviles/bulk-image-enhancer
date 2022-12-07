@@ -4,7 +4,6 @@ import multiprocessing as mp
 import os, os.path
 import time
 import textwrap
-import filecmp
 
 def enhance(source_path, output_path, brightness_factor, sharpness_factor, contrast_factor, start_time, secs, file):
 
